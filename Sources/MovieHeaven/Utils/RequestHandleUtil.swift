@@ -39,27 +39,40 @@ class RequestHandleUtil {
     /// 签名认证
     ///
     /// - Parameters:
-    ///   - params: 需要认证的参数
+    ///   - paramsString: 需要认证的json参数字符串
     ///   - sign: 签名串
     /// - Returns: 认证结果
-    class func signatureVerification(params:[String:Any?]?,sign:String?) -> Bool{
-        
+    class func signatureVerification(paramsString:String, sign:String?) -> Bool{
+        var paramsString = paramsString
         guard sign != nil else {
+            
+            return false
+            
+        }
+        if paramsString.count < 2 {
             return false
         }
-        if let paramsString = try? params.jsonEncodedString() {
-            guard let md5Byte = (paramsString + MD5_KEY).digest(.md5),let md5 = String(validatingUTF8:md5Byte) else {
-                return false
-            }
-            LogFile.info("originString = \(paramsString)---sign = \(md5)")
-            if md5 != sign{
-                return false
-            }
-        } else {
-            return false
-        }
-        return true
+        paramsString.remove(at: paramsString.startIndex)
+        paramsString.remove(at: paramsString.index(before: paramsString.endIndex))
         
+        guard let range1 = paramsString.range(of: "{") else {
+            return false
+        }
+        paramsString.removeSubrange(paramsString.startIndex ..< range1.lowerBound)
+        guard let range2 = paramsString.range(of: "}", options: String.CompareOptions.backwards, range: nil, locale: nil) else {
+            return false
+        }
+        paramsString.removeSubrange(range2.upperBound ..< paramsString.endIndex)
+        guard let md5Byte = (paramsString + MD5_KEY).digest(.md5), let hexBytes = md5Byte.encode(.hex), let md5 = String(validatingUTF8:hexBytes) else {
+            return false
+        }
+        LogFile.info("originString = \(paramsString)---sign = \(md5)")
+        if md5 != sign{
+            
+            return false
+        }
+        
+        return true
     }
     
 }
