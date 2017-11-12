@@ -8,27 +8,20 @@ import PerfectHTTP
 import PerfectLib
 
 func custom404(data: [String:Any]) throws -> HTTPResponseFilter {
+    
     struct Filter404: HTTPResponseFilter {
-        func filterBody(response: HTTPResponse, callback: (HTTPResponseFilterResult) -> ()) {
-            if case .notFound = response.status {
-                Log.info(message: "404，找不到数据")
-                
-//                response.setBody(string: "404 Not Found")
-//                response.setHeader(.contentLength, value: "\(response.bodyBytes.count)")
-                
-                response.completed()
-                callback(.done)
-            } else {
-                callback(.continue)
-            }
-            
-        }
-        
         func filterHeaders(response: HTTPResponse, callback: (HTTPResponseFilterResult) -> ()) {
+            if case .notFound = response.status {
+                response.setBody(string: "404 Not Found")
+                response.setHeader(.contentLength, value: "\(response.bodyBytes.count)")
+                
+            }
+            return callback(.continue)
+        }
+        func filterBody(response: HTTPResponse, callback: (HTTPResponseFilterResult) -> ()) {
             callback(.continue)
         }
-        
-
     }
     return Filter404()
+    
 }

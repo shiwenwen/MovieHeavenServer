@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "CMySQL",
+        "repositoryURL": "https://github.com/vapor/cmysql.git",
+        "state": {
+          "branch": null,
+          "revision": "d931ed6ce52e772cd364fc0da59312440d6eee43",
+          "version": "2.0.2"
+        }
+      },
+      {
         "package": "COpenSSL",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-COpenSSL.git",
         "state": {
@@ -17,6 +26,15 @@
           "branch": null,
           "revision": "ba9d1fb5be8eb238521206b39bec90a760bb0192",
           "version": "3.0.0"
+        }
+      },
+      {
+        "package": "MySQL",
+        "repositoryURL": "https://github.com/novi/mysql-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "15da2c52defafd6e8d33ff47717c2b7b60a27d42",
+          "version": "0.8.1"
         }
       },
       {

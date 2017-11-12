@@ -8,10 +8,14 @@
 import PerfectRequestLogger
 import PerfectLogger
 import PerfectLib
-import MySQLStORM
 import PerfectCrypto
 import PerfectSession
 import PerfectHTTPServer
+import MySQL
+import CMySQL
+
+public var MySQLConnectionPool: ConnectionPool!
+
 /// 配置服务
 func configServer() {
     // 初始化加密
@@ -32,7 +36,8 @@ func startServer() {
         "servers": [
             [   "name":"www.gallifrey.cn",
                 "port":SERVER_PORT,
-                "filters":filters()
+                "filters":filters(),
+                "routes":mainRoutes()
             ]
         ]
     ]
@@ -85,12 +90,22 @@ fileprivate func configWebroot() -> String {
     return "./webroot"
 }
 
-/// 配置MySQL
+/// 配置MySQL 连接池
 fileprivate func configMySQL() {
+
+    MySQLConnectionPool = ConnectionPool(options: MySQLOptions(database: SQL_DB, password: SQL_PASSWORD, user: SQL_USER, port: SQL_PORT, host: SQL_HOST))
+    MySQLConnectionPool.maxConnections = 5
     
-    MySQLConnector.host = SQL_HOST
-    MySQLConnector.username = SQL_USER
-    MySQLConnector.password = SQL_PASSWORD
-    MySQLConnector.port = SQL_PORT
-    MySQLConnector.database = SQL_DB
 }
+fileprivate struct MySQLOptions:ConnectionOption {
+    var database: String
+    
+    var password: String
+    
+    var user: String
+    
+    var port: Int
+    
+    var host: String
+}
+

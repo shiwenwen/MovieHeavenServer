@@ -8,3 +8,4 @@
 let HandleSuccessTxt = "处理成功"
 let HandleFailedTxt = "处理失败"
 let ResponseSuccessMsg = "请求成功"
+let RequestFailed = "请求失败"

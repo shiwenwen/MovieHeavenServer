@@ -5,6 +5,7 @@
 //  Created by 石文文 on 2017/11/9.
 //
 import PerfectLogger
+import Foundation
 
 class RequestHandleUtil {
     
@@ -17,7 +18,7 @@ class RequestHandleUtil {
     ///   - code: 响应码 默认 0000
     ///   - msg: 响应信息 默认 成功
     /// - Returns:Json字典
-    class func responseJson(data:[String:Any?],txt:String? = HandleSuccessTxt,status:ResponseStatus? = .success, code:ResponseCode = .success,msg:String = ResponseSuccessMsg) -> [String:Any?] {
+    static func responseJson(data:[String:Any?],txt:String? = HandleSuccessTxt,status:ResponseStatus? = .success, code:ResponseCode = .success,msg:String = ResponseSuccessMsg) -> [String:Any?] {
         
         var json:[String:Any] = [
             "code":code.rawValue,
@@ -32,7 +33,7 @@ class RequestHandleUtil {
         } else {
             json["data"] = nil
         }
-        
+        LogFile.info("response:\n\(json)")
         return json
     }
     
@@ -42,8 +43,8 @@ class RequestHandleUtil {
     ///   - paramsString: 需要认证的json参数字符串
     ///   - sign: 签名串
     /// - Returns: 认证结果
-    class func signatureVerification(paramsString:String, sign:String?) -> Bool{
-        var paramsString = paramsString
+    static func signatureVerification(paramsString:String, sign:String?) -> Bool{
+        var paramsStr = paramsString
         guard sign != nil else {
             
             return false
@@ -52,21 +53,23 @@ class RequestHandleUtil {
         if paramsString.count < 2 {
             return false
         }
-        paramsString.remove(at: paramsString.startIndex)
-        paramsString.remove(at: paramsString.index(before: paramsString.endIndex))
+        paramsStr.remove(at: paramsStr.startIndex)
+        paramsStr.remove(at: paramsStr.index(before: paramsStr.endIndex))
         
-        guard let range1 = paramsString.range(of: "{") else {
+        guard let range1 = paramsStr.range(of: "{") else {
             return false
         }
-        paramsString.removeSubrange(paramsString.startIndex ..< range1.lowerBound)
-        guard let range2 = paramsString.range(of: "}", options: String.CompareOptions.backwards, range: nil, locale: nil) else {
+        paramsStr.removeSubrange(paramsStr.startIndex ..< range1.lowerBound)
+        guard let range2 = paramsStr.range(of: "}", options: String.CompareOptions.backwards, range: nil, locale: nil) else {
             return false
         }
-        paramsString.removeSubrange(range2.upperBound ..< paramsString.endIndex)
-        guard let md5Byte = (paramsString + MD5_KEY).digest(.md5), let hexBytes = md5Byte.encode(.hex), let md5 = String(validatingUTF8:hexBytes) else {
+        paramsStr.removeSubrange(range2.upperBound ..< paramsStr.endIndex)
+        let parStr = paramsStr.replacingOccurrences(of: "\\/", with: "/").replacingOccurrences(of: " ", with: "") + MD5_KEY
+        
+        guard let md5Byte = parStr.digest(.md5), let hexBytes = md5Byte.encode(.hex), let md5 = String(validatingUTF8:hexBytes) else {
             return false
         }
-        LogFile.info("originString = \(paramsString)---sign = \(md5)")
+        LogFile.info("originString = \(parStr)---sign = \(md5)")
         if md5 != sign{
             
             return false
@@ -75,4 +78,13 @@ class RequestHandleUtil {
         return true
     }
     
+    /// postParams 转换json字典
+    ///
+    /// - Parameter postParams: postParams
+    /// - Returns: json字典
+    /// - Throws: JSONConvertible
+    static func postParams2JsonDictionary(postParams: [(String, String)]) throws -> [String:Any?] {
+        
+        return try (postParams.first!.0 + postParams.first!.1).jsonDecode() as! [String:Any?]
+    }
 }
