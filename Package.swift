@@ -1,5 +1,5 @@
 // Generated automatically by Perfect Assistant Application
-// Date: 2017-11-11 07:16:08 +0000
+// Date: 2017-11-13 13:23:57 +0000
 import PackageDescription
 let package = Package(
 	name: "MovieHeaven",
@@ -12,5 +12,6 @@ let package = Package(
 		.Package(url: "https://github.com/PerfectlySoft/Perfect-Session.git", majorVersion: 3),
 		.Package(url: "https://github.com/novi/mysql-swift.git", majorVersion: 0, minor: 8),
 		.Package(url: "https://github.com/iamjono/SwiftString.git", majorVersion: 2),
+		.Package(url: "https://github.com/PerfectlySoft/Perfect-Session-MySQL.git", majorVersion: 3),
 	]
 )

@@ -10,9 +10,11 @@ import PerfectLogger
 import PerfectLib
 import PerfectCrypto
 import PerfectSession
+import PerfectSessionMySQL
 import PerfectHTTPServer
 import MySQL
 import CMySQL
+
 
 public var MySQLConnectionPool: ConnectionPool!
 
@@ -69,6 +71,23 @@ fileprivate func configSession() {
     SessionConfig.idle = 86400 * 30
     // 可选项，设置 Cookie作用域
     SessionConfig.cookieDomain = "localhost"
+    // 可选项，锁定创建时用的 IP 地址，即在会话过程中不允许 IP 地址发生变化，否则视为欺诈。默认为 false
+//    SessionConfig.IPAddressLock = true
+//    SessionConfig.CSRF.checkState = false
+    #if os(Linux)
+        // 可选项，锁定创建时所用的用户代理，即服务器在会话过程中不允许用户代理发生变化，否则视为欺诈。默认为 false
+        SessionConfig.userAgentLock = true
+    #endif
+    
+    MySQLSessionConnector.host = SQL_HOST
+    MySQLSessionConnector.port = SQL_PORT
+    MySQLSessionConnector.username = SQL_USER
+    MySQLSessionConnector.password = SQL_PASSWORD
+    MySQLSessionConnector.database = SQL_DB
+    MySQLSessionConnector.table = "sessions"
+    
+    
+    
 }
 
 /// 配置webroot

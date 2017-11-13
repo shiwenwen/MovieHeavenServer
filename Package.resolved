@@ -155,6 +155,15 @@
         }
       },
       {
+        "package": "PerfectSessionMySQL",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Session-MySQL.git",
+        "state": {
+          "branch": null,
+          "revision": "26fd6826448950d8695329c457ad82324dc6ea33",
+          "version": "3.0.0"
+        }
+      },
+      {
         "package": "PerfectThread",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Thread.git",
         "state": {

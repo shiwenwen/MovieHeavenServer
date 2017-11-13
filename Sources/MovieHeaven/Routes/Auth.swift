@@ -10,15 +10,19 @@ import PerfectLogger
 import Foundation
 import MySQL
 import CMySQL
-class Auth {
+
+struct Auth {
     
     /// 登录
-    ///
+    ///POST
     /// - Parameter data: data
     /// - Returns: hander
     static func login(data: [String:Any]) -> RequestHandler {
         return { request,response in
             defer {
+                if let session = request.session {
+                    LogFile.info("\(session)")
+                }
                 response.completed()
             }
 //            已经在过滤器校验过，可以强制转换解包
@@ -30,7 +34,7 @@ class Auth {
             
             do {
                 guard let qq_unionid = data["qq_unionid"] as? String/*,let qq_openid = data["qq_openid"]*/ else {
-                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:],txt: "qq_unionid qq_openid 不能为空", status:ResponseStatus.defaulErrortStatus))
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:],txt: "qq_openid 不能为空", status:ResponseStatus.defaulErrortStatus))
                     return
                 }
                 
@@ -47,7 +51,8 @@ class Auth {
                         return try connection.query("insert into user_tbl set ?", [user]) as QueryStatus
                     }
                     let userId = status.insertedID
-                    let userInfo: [String: Any?] = ["uid":userId,"nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
+                    request.session?.userid = "\(userId)"
+                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo], txt: "登录成功")
                     try response.setBody(json: body)
                     return
@@ -62,12 +67,14 @@ class Auth {
                 
                 if  status.affectedRows > 0{
 //                    更新成功返回新信息
-                    let userInfo: [String: Any?] = ["uid":user.uid,"nickName":nickName,"avatar":avatar,"gender":gender]
+                    request.session?.userid = "\(user.uid)"
+                    let userInfo: [String: Any?] = ["nickName":nickName,"avatar":avatar,"gender":gender]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo])
                     try response.setBody(json: body)
                 } else {
 //                    更新失败返回旧信息
-                    let userInfo: [String: Any?] = ["uid":user.uid,"nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
+                    request.session?.userid = "\(user.uid)"
+                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo])
                     try response.setBody(json: body)
                 }
@@ -80,5 +87,25 @@ class Auth {
             
         }
         
+    }
+    
+    /// 退出登录
+    ///
+    /// - Parameter data: data
+    /// - Returns: RequestHandler
+    static func signOut(data: [String:Any]) -> RequestHandler {
+        return { request, response in
+            defer {
+                response.completed()
+            }
+            request.session?.userid = ""
+            request.session?.idle = 0
+            do {
+                try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "已退出登录"))
+            } catch  {
+                LogFile.error("\(error)")
+                let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
+            }
+        }
     }
 }

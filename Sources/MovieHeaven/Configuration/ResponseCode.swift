@@ -10,4 +10,5 @@ enum ResponseCode : String{
     case signError = "4001" //签名错误
     case success = "0000" //成功
     case defaultError = "9999" //默认错误
+    case logonFailure = "9995" //登录失效
 }

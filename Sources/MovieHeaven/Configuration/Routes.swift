@@ -24,11 +24,15 @@ func mainRoutes() -> [[String: Any]] {
     
     
     
-//------- Handler for Auth--------------------------------
+//------- Handler for Auth --------------------------------
     let auth = "auth/"
-//
+
     routes.append(["method":"post", "uri":APIV1 + auth + "/login", "handler":Auth.login])
- 
+    routes.append(["method":["get", "post"], "uri":APIV1 + auth + "/sign_out", "handler":Auth.signOut])
+//------- Handler for User --------------------------------
+    let user = "user/"
+    routes.append(["method":["get", "post"], "uri":APIV1 + user + "/info", "handler":User.getUserInfo])
+    
     
     return routes
 }

@@ -6,7 +6,7 @@
 //
 #if os(Linux)
     //MARK:----------- Local MySql Release -----------------
-    let LOCAL_HOST = "http://47.94.175.119:80"
+    let LOCAL_HOST = "http://47.94.175.119"
     let SERVER_PORT = 80
     let SQL_HOST = "127.0.0.1"
     let SQL_USER = "root"
@@ -15,7 +15,7 @@
 #else
     
     //MARK:----------- Local MySql Develop -----------------
-    let LOCAL_HOST = "http://192.168.31.208:8080"
+    let LOCAL_HOST = "http://192.168.31.208"
     let SERVER_PORT = 8080
     let SQL_HOST = "127.0.0.1"
     let SQL_USER = "root"

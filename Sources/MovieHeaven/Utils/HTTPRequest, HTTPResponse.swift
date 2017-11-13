@@ -6,7 +6,8 @@
 //
 import PerfectLogger
 import Foundation
-
+import PerfectHTTPServer
+import PerfectHTTP
 class RequestHandleUtil {
     
     /// 生成相应Json字典
@@ -78,6 +79,41 @@ class RequestHandleUtil {
         return true
     }
     
+    /// session检查
+    ///
+    /// - Parameters:
+    ///   - request: request
+    ///   - response: response
+    /// - Returns: uid
+    static func sessionAuth(request: HTTPRequest, response:HTTPResponse) -> String? {
+        guard let session = request.session else {
+            LogFile.info("session不存在")
+            do {
+                try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .logonFailure, msg: "登录失效,请登录后操作"))
+            } catch {
+                
+            }
+            response.completed()
+            return nil
+            
+        }
+        if !session.isValid(request) || session.userid.isEmpty {
+            LogFile.info("\(session)")
+            LogFile.info("session失效或找不到对应userid")
+            request.session!.idle = 0
+            do {
+                try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .logonFailure, msg: "登录失效,请登录后操作"))
+            } catch {
+                
+            }
+            response.completed()
+            return nil
+        }
+        request.session!.touch()
+        LogFile.info("session更新成功")
+        return session.userid
+        
+    }
     /// postParams 转换json字典
     ///
     /// - Parameter postParams: postParams
