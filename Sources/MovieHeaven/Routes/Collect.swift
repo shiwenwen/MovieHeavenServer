@@ -40,7 +40,7 @@ struct Collect {
                     try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "您已收藏过该视频了", status: .b0010))
                     return
                 }
-                let collect = CollectModel(cid: 0, videoId: videoId, videoName: data["videoName"] as? String, videoStatus: data["videoStatus"] as? String, score: data["score"] as? String, videoType: data["videoType"] as? String, actors: data["actors"] as? String, uid: uid, create_time: Date())
+                let collect = CollectModel(cid: 0, videoId: videoId, videoName: data["videoName"] as? String, videoStatus: data["videoStatus"] as? String, score: data["score"] as? String, videoType: data["videoType"] as? String, actors: data["actors"] as? String, uid: uid, img: data["img"] as? String, create_time: Date())
                 
                 let status = try MySQLConnectionPool.execute{ connection -> QueryStatus in
                     

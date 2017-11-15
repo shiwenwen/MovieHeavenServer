@@ -18,6 +18,7 @@ struct CollectModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
     let videoType: String?
     let actors: String?
     let uid: Int
+    let img: String?
     let create_time: Date
     // Decode query results (selecting rows) to a model
     static func decodeRow(r: QueryRowResult) throws -> CollectModel {
@@ -30,6 +31,7 @@ struct CollectModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             videoType: r <|? "video_type",
             actors: r <|? "actors",
             uid: r <| "uid",
+            img: r <|? "img",
             create_time: r <| "create_time" // string enum type
         )
     }
@@ -45,10 +47,14 @@ struct CollectModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             "score": score,
             "video_type": videoType,
             "actors": actors,
-            "uid": uid
+            "uid": uid,
+            "img": img
             ])
     }
     func toDictionary() -> [String : Any?] {
+        let format = DateFormatter()
+        format.dateFormat = "YYYY-MM-dd HH:mm";
+        
         return [
             "cid":cid,
             "videoId": videoId,
@@ -57,8 +63,9 @@ struct CollectModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             "score": score,
             "videoType": videoType,
             "actors": actors,
-            "uid": uid,
-//            "create_time":create_time.timeIntervalSince1970
+            "img": img,
+//            "uid": uid,
+            "create_time":format.string(from: create_time)
         ]
         
     }
