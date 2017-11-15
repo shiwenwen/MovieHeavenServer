@@ -32,7 +32,12 @@ func mainRoutes() -> [[String: Any]] {
 //------- Handler for User --------------------------------
     let user = "user/"
     routes.append(["method":["get", "post"], "uri":APIV1 + user + "/info", "handler":User.getUserInfo])
-    
-    
+
+//------- Handler for Collect --------------------------------
+    let collect = "collect/"
+    routes.append(["method":"post", "uri":APIV1 + collect + "/add", "handler":Collect.addtoCollection])
+    routes.append(["method":"post", "uri":APIV1 + collect + "/cancel", "handler":Collect.cancelCollection])
+    routes.append(["method":"get", "uri":APIV1 + collect + "/get_collection_list", "handler":Collect.getCollectionList])
+    routes.append(["method":"get", "uri":APIV1 + collect + "/check", "handler":Collect.checkCollectionState])
     return routes
 }

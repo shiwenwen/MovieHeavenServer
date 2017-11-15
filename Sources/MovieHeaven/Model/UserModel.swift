@@ -41,4 +41,5 @@ struct UserModel: QueryRowResultType, QueryParameterDictionaryType {
             "gender":gender
             ])
     }
+    
 }

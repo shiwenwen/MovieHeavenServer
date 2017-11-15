@@ -85,7 +85,7 @@ class RequestHandleUtil {
     ///   - request: request
     ///   - response: response
     /// - Returns: uid
-    static func sessionAuth(request: HTTPRequest, response:HTTPResponse) -> String? {
+    static func sessionAuth(request: HTTPRequest, response:HTTPResponse) -> Int? {
         guard let session = request.session else {
             LogFile.info("session不存在")
             do {
@@ -111,7 +111,7 @@ class RequestHandleUtil {
         }
         request.session!.touch()
         LogFile.info("session更新成功")
-        return session.userid
+        return Int(session.userid)
         
     }
     /// postParams 转换json字典
