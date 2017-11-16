@@ -39,5 +39,12 @@ func mainRoutes() -> [[String: Any]] {
     routes.append(["method":"post", "uri":APIV1 + collect + "/cancel", "handler":Collect.cancelCollection])
     routes.append(["method":"get", "uri":APIV1 + collect + "/get_collection_list", "handler":Collect.getCollectionList])
     routes.append(["method":"get", "uri":APIV1 + collect + "/check", "handler":Collect.checkCollectionState])
+    
+//------- Handler for history --------------------------------
+    let history = "history/"
+    routes.append(["method":"post", "uri":APIV1 + history + "/add", "handler":History.addHistory])
+    routes.append(["method":"get", "uri":APIV1 + history + "/get_history_list", "handler":History.getHistoryList])
+    routes.append(["method":"get", "uri":APIV1 + history + "/get_history", "handler":History.getHistory])
+    
     return routes
 }

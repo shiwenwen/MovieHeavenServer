@@ -10,16 +10,17 @@ import MySQL
 import CMySQL
 struct CollectModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson {
     
-    let cid: Int
-    let videoId: Int
-    let videoName: String?
-    let videoStatus: String?
-    let score: String?
-    let videoType: String?
-    let actors: String?
-    let uid: Int
-    let img: String?
-    let create_time: Date
+    
+    let cid: Int //收藏id
+    let videoId: Int //视频id
+    let videoName: String? //视频名称
+    let videoStatus: String? //视频状态
+    let score: String? //视频评分
+    let videoType: String? //视频类型
+    let actors: String? //演员
+    let uid: Int //用户id
+    let img: String? //视频图片
+    let create_time: Date //创建时间
     // Decode query results (selecting rows) to a model
     static func decodeRow(r: QueryRowResult) throws -> CollectModel {
         return try CollectModel(

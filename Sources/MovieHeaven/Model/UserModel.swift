@@ -9,11 +9,11 @@ import CMySQL
 import Foundation
 
 struct UserModel: QueryRowResultType, QueryParameterDictionaryType {
-    let uid: Int
-    let qq_unionid: String
-    let nickName: String?
-    let avatar: String?
-    let gender: String?
+    let uid: Int //用户id
+    let qq_unionid: String //qq_unionid
+    let nickName: String? //昵称
+    let avatar: String? //头像
+    let gender: String? //性别
 //    let qq_openid: String
     let create_time: Date
     

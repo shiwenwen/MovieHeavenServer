@@ -1,0 +1,30 @@
+.con_mar {
+    width: 94%;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.txt_de {
+    font-size: 2.8em;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: justify;
+    line-height: 22px;
+    text-indent: 1.5em;
+}
+p {
+    margin: 0;
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+body {
+    margin: 0;
+    font: normal 31.25% "Microsoft YaHei",Helvetica,Arial,sans-serif;
+}
+div {
+    display: block;
+}
