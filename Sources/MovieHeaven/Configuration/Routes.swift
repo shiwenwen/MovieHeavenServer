@@ -45,6 +45,10 @@ func mainRoutes() -> [[String: Any]] {
     routes.append(["method":"post", "uri":APIV1 + history + "/add", "handler":History.addHistory])
     routes.append(["method":"get", "uri":APIV1 + history + "/get_history_list", "handler":History.getHistoryList])
     routes.append(["method":"get", "uri":APIV1 + history + "/get_history", "handler":History.getHistory])
-    
+    routes.append(["method":"post", "uri":APIV1 + history + "/delete_history", "handler":History.deleteHistory])
+//------- Handler for videoDetail --------------------------------
+    let videoDetail = "video_detail/"
+    routes.append(["method":"get", "uri":APIV1 + videoDetail + "/state", "handler":VideoDetail.getState])
+
     return routes
 }

@@ -41,6 +41,7 @@ struct History {
                 let rows: [HistoryModel] = try MySQLConnectionPool.execute{ connection in
                     return try connection.query("select * from history_tbl where videoId=? and uid=?", [videoId,uid])
                 }
+                
                 if rows.count < 1 {
 //                    新加历史
                     let history = HistoryModel(hid: 0, videoId: videoId, videoName: data["videoName"] as? String, videoStatus: data["videoStatus"] as? String, score: data["score"] as? String, videoType: data["videoType"] as? String, actors: data["actors"] as? String, uid: uid, img: data["img"] as? String, sourceType: sourceType, sourceName: sourceName, partName: partName, vid: vid, playingTime: data["playingTime"] as? Double ?? 0.0, isFinish: data["isFinish"] as? Int ?? 0, update_time: Date())
@@ -59,10 +60,10 @@ struct History {
                 } else{
 //                    更新历史
                     let hid = rows.first!.hid
-                    let params = [sourceType,sourceName,partName,vid,data["playingTime"] as? Double ?? 0.0,data["isFinish"] as? Int ?? 0,Date(),hid] as [QueryParameter]
+                    let params = [sourceType,sourceName,partName,vid,data["playingTime"] as? Double ?? 0.0,data["isFinish"] as? Int ?? 0,hid] as [QueryParameter]
                     
                     let status = try MySQLConnectionPool.execute{ coonection in
-                        try coonection.query("update history_tbl set source_type=?,source_name=?,part_name=?,vid=?,playing_time=?,is_finish=?,update_time=? where hid=?",params)
+                        try coonection.query("update history_tbl set source_type=?,source_name=?,part_name=?,vid=?,playing_time=?,is_finish=? where hid=?", params)
                     }
                     
                     if  status.affectedRows > 0{
@@ -153,6 +154,42 @@ struct History {
                 let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
             }
         }
+    }
+    
+    /// 删除历史
+    ///
+    /// - Parameter data: <#data description#>
+    /// - Returns: <#return value description#>
+    static func deleteHistory(data: [String:Any]) -> RequestHandler {
+        
+        return { request, response in
+            defer {
+                response.completed()
+            }
+            guard let _ = RequestHandleUtil.sessionAuth(request: request, response: response) else {
+                return
+            }
+            let json = try! RequestHandleUtil.postParams2JsonDictionary(postParams: request.postParams)
+            let data = json["data"] as! [String:Any?]
+            do {
+                guard let hid = data["hid"] as? Int else {
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: HandleFailedTxt, status: .defaulErrortStatus))
+                    return
+                }
+                let status = try MySQLConnectionPool.execute{ connection in
+                    return try connection.query("delete from history_tbl where hid=?;", [hid])
+                }
+                if status.affectedRows > 0 {
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "记录已删除", status: .success))
+                }else {
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "该记录不存在", status: .defaulErrortStatus))
+                }
+            } catch  {
+                LogFile.error("\(error)")
+                let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
+            }
+        }
+        
     }
     
 }

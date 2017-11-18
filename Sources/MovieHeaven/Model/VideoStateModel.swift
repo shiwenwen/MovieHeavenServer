@@ -1,15 +1,16 @@
 //
-//  HistoryModel.swift
-//  MovieHeavenPackageDescription
+//  VideoStateModel.swift
+//  MovieHeaven
 //
-//  Created by 石文文 on 2017/11/15.
+//  Created by 石文文 on 2017/11/17.
 //
 
 import Foundation
+
 import MySQL
 import CMySQL
-struct HistoryModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson {
-    
+struct VideoStateModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson {
+//    历史相关
     let hid: Int //收藏id
     let videoId: Int //视频id
     let videoName: String? //视频名称
@@ -26,10 +27,11 @@ struct HistoryModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
     let playingTime: Double //已播放的时长
     let isFinish: Int //是否看完
     let update_time: Date //更新时间
-    
+//  收藏相关
+    let cid: Int? //收藏的id
     // Decode query results (selecting rows) to a model
-    static func decodeRow(r: QueryRowResult) throws -> HistoryModel {
-        return try HistoryModel(
+    static func decodeRow(r: QueryRowResult) throws -> VideoStateModel {
+        return try VideoStateModel(
             hid: r <| "hid",
             videoId: r <| "videoId",
             videoName: r <|? "video_name",
@@ -45,7 +47,8 @@ struct HistoryModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             vid: r <| "vid",
             playingTime: r <| "playing_time",
             isFinish: r <| "is_finish",
-            update_time: r <| "update_time" // string enum type
+            update_time: r <| "update_time", // string enum type
+            cid: r <|? "cid"
         )
         
     }
@@ -53,24 +56,7 @@ struct HistoryModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
     // Use this model as a query paramter
     // See inserting example
     func queryParameter() throws -> QueryDictionary {
-        return QueryDictionary([
-            //"hid": // auto increment
-            "videoId": videoId,
-            "video_name": videoName,
-            "video_status": videoStatus,
-            "score": score,
-            "video_type": videoType,
-            "actors": actors,
-            "uid": uid,
-            "img": img,
-            "source_type": sourceType,
-            "source_name": sourceName,
-            "part_name": partName,
-            "vid": vid,
-            "playing_time": playingTime,
-            "is_finish": isFinish,
-//            "update_time":update_time
-            ])
+        return QueryDictionary([:])
     }
     func toDictionary() -> [String : Any?] {
         let format = DateFormatter()
@@ -92,7 +78,8 @@ struct HistoryModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             "playingTime": playingTime,
             "isFinish":isFinish,
             //            "uid": uid,
-            "update_time":format.string(from: update_time)
+            "update_time":format.string(from: update_time),
+            "cid":cid
         ]
         
     }

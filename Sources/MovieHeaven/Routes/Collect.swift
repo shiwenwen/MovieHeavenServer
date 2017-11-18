@@ -89,7 +89,8 @@ struct Collect {
                     try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "该收藏不存在", status: .defaulErrortStatus))
                 }
             } catch  {
-                
+                LogFile.error("\(error)")
+                let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
             }
         }
     }
