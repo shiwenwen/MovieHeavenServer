@@ -34,29 +34,49 @@ func configServer() {
 /// 启动服务
 func startServer() {
     // Configure Server
-    var confData: [String:[[String:Any]]] = [
-        "servers": [
-            [   "name":"www.gallifrey.cn",
-                "port":SERVER_PORT,
-                "filters":filters(),
-                "routes":mainRoutes(),
-                
+    
+    #if os(Linux)
+        let confData: [String:[[String:Any]]] = [
+            "servers": [
+                [   "name":"www.gallifrey.cn",
+                    "port":SERVER_PORT,
+                    "filters":filters(),
+                    "routes":mainRoutes(),
+                    "tlsConfig": ["certPath": "./cert"]
+                ]
             ]
         ]
-    ]
-    #if os(Linux)
-            confData["tlsConfig"] = ["certPath":"./cert"]
+        do {
+            // Launch the servers based on the configuration data.
+            try HTTPServer.launch(configurationData: confData)
+            
+            
+        } catch let error{
+            LogFile.error("服务启动失败\(error)")
+            
+        }
+    #else
+        let confData: [String:[[String:Any]]] = [
+            "servers": [
+                [   "name":"www.gallifrey.cn",
+                    "port":SERVER_PORT,
+                    "filters":filters(),
+                    "routes":mainRoutes(),
+                ]
+            ]
+        ]
+        do {
+            // Launch the servers based on the configuration data.
+            try HTTPServer.launch(configurationData: confData)
+            
+            
+        } catch let error{
+            LogFile.error("服务启动失败\(error)")
+            
+        }
     #endif
     
-    do {
-        // Launch the servers based on the configuration data.
-        try HTTPServer.launch(configurationData: confData)
-        
-        
-    } catch let error{
-        LogFile.error("服务启动失败\(error)")
-        
-    }
+    
 
 }
 /// 配置LogFile
