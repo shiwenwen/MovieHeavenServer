@@ -81,6 +81,7 @@ func startServer() {
 fileprivate func configLogFile() {
     
     RequestLogFile.location = "./MovieHeaven.log"
+    LogFile.location = "./MovieHeaven.log"
 }
 fileprivate func configSession() {
     
