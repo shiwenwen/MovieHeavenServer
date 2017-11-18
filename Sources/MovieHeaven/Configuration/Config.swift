@@ -34,21 +34,34 @@ func configServer() {
 /// 启动服务
 func startServer() {
     // Configure Server
-    let confData: [String:[[String:Any]]] = [
-        "servers": [
-            [   "name":"www.gallifrey.cn",
-                "port":SERVER_PORT,
-                "filters":filters(),
-                "routes":mainRoutes()
+    var confData: [String:[[String:Any]]]!
+    
+    #if os(Linux)
+        confData = [
+            "servers" = [
+                [   "name":"www.gallifrey.cn",
+                    "port":SERVER_PORT,
+                    "filters":filters(),
+                    "routes":mainRoutes(),
+                    "tlsConfig": ["certPath": "./cert"]
+                ]
             ]
         ]
-    ]
-    
-    
+    #else
+        confData = [
+            "servers": [
+                [   "name":"www.gallifrey.cn",
+                    "port":SERVER_PORT,
+                    "filters":filters(),
+                    "routes":mainRoutes()
+                ]
+            ]
+        ]
+    #endif
     do {
         // Launch the servers based on the configuration data.
-        try HTTPServer.launch(configurationData: confData)
         
+        try HTTPServer.launch(configurationData: confData)
         
     } catch let error{
         LogFile.error("服务启动失败\(error)")
