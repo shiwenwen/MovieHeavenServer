@@ -39,7 +39,7 @@ func startServer() {
         let confData: [String:[[String:Any]]] = [
             "servers": [
                 [   "name":"www.gallifrey.cn",
-                    "port":SERVER_PORT,
+//                    "port":SERVER_PORT,
                     "filters":filters(),
                     "routes":mainRoutes(),
                     "tlsConfig": ["certPath": "./cert/214238272250689.pem","keyPath":"./cert/214238272250689.key"]
@@ -75,8 +75,6 @@ func startServer() {
             
         }
     #endif
-    
-    
 
 }
 /// 配置LogFile
