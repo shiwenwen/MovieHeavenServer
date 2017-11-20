@@ -49,6 +49,10 @@ func mainRoutes() -> [[String: Any]] {
 //------- Handler for videoDetail --------------------------------
     let videoDetail = "video_detail/"
     routes.append(["method":"get", "uri":APIV1 + videoDetail + "/state", "handler":VideoDetail.getState])
+    
+//------- Handler for AppUpdate --------------------------------
+let appUpdate = "app_update/"
+routes.append(["method":"get", "uri":APIV1 + appUpdate + "/check", "handler":AppUpdate.checkUpdate])
 
     return routes
 }
