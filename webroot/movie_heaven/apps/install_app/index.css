@@ -8,7 +8,7 @@ body {
     font-size: 17px;
     color: #9b9b9b;
     text-align: center;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 .install {
     width: 30%;
@@ -28,5 +28,33 @@ body {
 .name {
     font-size: 15px;
     color: #333333;
-    margin: 8px 0 100px 0;
+    margin: 8px 0 50px 0;
+}
+.how_to_install {
+    margin: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.how_to_install_title {
+    font-size: 17px;
+    color: #0096ff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.how_to_install_tip {
+    font-size: 15px;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.how_to_install_step {
+    font-size: 13px;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 3px;
+}
+.how_to_install img {
+    width: 100%;
+    margin: 15px 0;
 }
