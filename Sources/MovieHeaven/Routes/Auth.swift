@@ -53,7 +53,7 @@ struct Auth {
                     let userId = status.insertedID
                     request.session?.userid = "\(userId)"
                     let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
-                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo], txt: "登录成功")
+                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":1], txt: "登录成功")
                     try response.setBody(json: body)
                     return
                 }
@@ -69,13 +69,13 @@ struct Auth {
 //                    更新成功返回新信息
                     request.session?.userid = "\(user.uid)"
                     let userInfo: [String: Any?] = ["nickName":nickName,"avatar":avatar,"gender":gender]
-                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo], txt: "登录成功")
+                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":0], txt: "登录成功")
                     try response.setBody(json: body)
                 } else {
 //                    更新失败返回旧信息
                     request.session?.userid = "\(user.uid)"
                     let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
-                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo], txt: "登录成功")
+                    let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":0], txt: "登录成功")
                     try response.setBody(json: body)
                 }
                 
