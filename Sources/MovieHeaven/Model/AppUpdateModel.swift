@@ -47,7 +47,7 @@ struct AppUpdateModel: QueryRowResultType, QueryParameterDictionaryType, ModelJs
             "appName": appName,
             "update_time": format.string(from: update_time),
             "forceUpdate": forceUpdate,
-            "description":description
+            "updateContent":description
             
 
         ]

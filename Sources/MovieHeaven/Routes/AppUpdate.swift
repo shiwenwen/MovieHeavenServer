@@ -67,14 +67,14 @@ struct AppUpdate {
             
             
             do {
-                guard let bundleId = request.param(name: "bundleId", defaultValue: "") else {
+                guard let bundleId = request.param(name: "bundleId", defaultValue: ""), let pageNum = Int(request.param(name: "pageNum", defaultValue: "0")!), let pageSize = Int(request.param(name: "pageSize", defaultValue: "10")!) else {
                     try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: HandleFailedTxt, status: .defaulErrortStatus))
                     return
                 }
                 
                 let rows: [AppUpdateModel] = try MySQLConnectionPool.execute{ connection in
                     
-                    return try connection.query("select * from app_update_tbl where bundle_id = ? order by build desc", [bundleId])
+                    return try connection.query("select * from app_update_tbl where bundle_id = ? order by build desc limit ?,?", [bundleId,pageNum * pageSize,pageSize])
                 }
                 var history = [[String:Any?]]()
                 for update in rows {
