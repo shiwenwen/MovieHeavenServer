@@ -13,6 +13,10 @@ window.onload = function(){
                 window.location = 'watchmovieheaven://videoId=' + videoId;
             }
 
+        } else {
+            if (browser.versions.qq || browser.versions.weixin) {
+                document.getElementsByClassName('tip')[0].innerText = '请点击右上角，选择 用Safari打开'
+            }
         }
 
     } else {
