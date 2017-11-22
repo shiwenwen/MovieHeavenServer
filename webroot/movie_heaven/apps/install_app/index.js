@@ -8,7 +8,7 @@ window.onload = function(){
         }
         if (videoId) {
             if (browser.versions.qq || browser.versions.weixin) {
-                document.getElementsByClassName('tip')[0].innerText= '请点击右上角，选择 用Safari打开'
+                document.getElementsByClassName('tip')[0].innerText= '请点击右上角，选择 用Safari打开，即可自动调起“观影天堂”播放此视频'
             } else {
                 window.location = 'watchmovieheaven://videoId=' + videoId;
             }
