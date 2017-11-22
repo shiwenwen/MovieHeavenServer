@@ -32,7 +32,8 @@ struct AppUpdate {
                 }
                 
                 let rows: [AppUpdateModel] = try MySQLConnectionPool.execute{ connection in
-                    return try connection.query("select * from app_update_tbl where bundle_id=?", [bundleId])
+                    
+                    return try connection.query("select * from app_update_tbl where build = (select max(build) from app_update_tbl where bundle_id = ?)", [bundleId])
                 }
                 
                 if rows.count > 0 {
