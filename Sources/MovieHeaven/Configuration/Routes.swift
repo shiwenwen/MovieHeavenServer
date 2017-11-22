@@ -53,6 +53,7 @@ func mainRoutes() -> [[String: Any]] {
 //------- Handler for AppUpdate --------------------------------
 let appUpdate = "app_update/"
 routes.append(["method":"get", "uri":APIV1 + appUpdate + "/check", "handler":AppUpdate.checkUpdate])
+routes.append(["method":"get", "uri":APIV1 + appUpdate + "/history", "handler":AppUpdate.updateHistory])
 
     return routes
 }

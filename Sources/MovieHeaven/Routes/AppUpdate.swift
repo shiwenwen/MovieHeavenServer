@@ -53,5 +53,41 @@ struct AppUpdate {
         }
         
     }
+    
+    /// 版本更新历史
+    ///
+    /// - Parameter data: <#data description#>
+    /// - Returns: <#return value description#>
+    static func updateHistory(data: [String:Any]) -> RequestHandler {
+        
+        return { request, response in
+            defer {
+                response.completed()
+            }
+            
+            
+            do {
+                guard let bundleId = request.param(name: "bundleId", defaultValue: "") else {
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: HandleFailedTxt, status: .defaulErrortStatus))
+                    return
+                }
+                
+                let rows: [AppUpdateModel] = try MySQLConnectionPool.execute{ connection in
+                    
+                    return try connection.query("select * from app_update_tbl where bundle_id = ? order by build desc", [bundleId])
+                }
+                var history = [[String:Any?]]()
+                for update in rows {
+                    history.append(update.toDictionary())
+                }
+                try response.setBody(json: RequestHandleUtil.responseJson(data: ["update_history":history]))
+                
+            } catch  {
+                LogFile.error("\(error)")
+                let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
+            }
+        }
+        
+    }
 }
 
