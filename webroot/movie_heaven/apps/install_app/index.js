@@ -3,18 +3,20 @@ window.onload = function(){
         var videoId = GetQueryString('videoId')
         console.log('videoId =' + videoId)
         // alert(navigator.userAgent)
-        if (!browser.versions.webApp) {
-            document.getElementsByClassName('tip')[0].innerText= '欢迎使用观影天堂'
-        }
+
         if (videoId) {
-            if (browser.versions.qq || browser.versions.weixin) {
-                document.getElementsByClassName('tip')[0].innerText= '请点击右上角，选择 用Safari打开，即可自动调起“观影天堂”播放此视频'
-            } else {
+
+            if (!browser.versions.webApp) {
+                document.getElementsByClassName('tip')[0].innerText= '欢迎使用观影天堂'
                 window.location = 'watchmovieheaven://videoId=' + videoId;
+            } else {
+                document.getElementsByClassName('tip')[0].innerText= '请点击右上角，选择 用Safari打开，即可自动调起“观影天堂”播放此视频'
             }
 
         } else {
-            if (browser.versions.qq || browser.versions.weixin) {
+            if (!browser.versions.webApp) {
+                document.getElementsByClassName('tip')[0].innerText= '欢迎使用观影天堂'
+            } else {
                 document.getElementsByClassName('tip')[0].innerText = '请点击右上角，选择 用Safari打开'
             }
         }
