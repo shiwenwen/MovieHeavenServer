@@ -75,20 +75,22 @@ struct FilterHttp {
                     callback(.halt(request, response))
                     return
                 }
-                
-                //签名校验
-//                guard RequestHandleUtil.signatureVerification(paramsString: params.0, sign: json["sign"] as? String) else{
-//                    let body = RequestHandleUtil .responseJson(data:[:], txt: nil, status:nil, code:.signError, msg: "签名错误")
-//                    LogFile.debug("\(body)")
-//                    do {
-//                        try response.setBody(json: body)
-//                    } catch {
-//                        LogFile.error("\(error)")
-//                    }
-//                    response.completed()
-//                    callback(.halt(request, response))
-//                    return
-//                }
+                #if os(Linux)
+                    //签名校验
+                    guard RequestHandleUtil.signatureVerification(paramsString: params.0, sign: json["sign"] as? String) else{
+                        let body = RequestHandleUtil .responseJson(data:[:], txt: nil, status:nil, code:.signError, msg: "签名错误")
+                        LogFile.debug("\(body)")
+                        do {
+                            try response.setBody(json: body)
+                        } catch {
+                            LogFile.error("\(error)")
+                        }
+                        response.completed()
+                        callback(.halt(request, response))
+                        return
+                    }
+
+                #endif
                 callback(.continue(request, response))
                 
             }
