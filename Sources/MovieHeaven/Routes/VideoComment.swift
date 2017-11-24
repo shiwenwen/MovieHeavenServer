@@ -30,14 +30,14 @@ struct VideoComment {
             
             do {
                 
-                guard let videoId = data["videoId"] as? Int else {
+                guard let videoId = data["videoId"] as? Int, let score = data["score"] as? Int else {
                     
                     try response.setBody(json: RequestHandleUtil.responseJson(data: [:],txt: "参数不完整", status:.defaulErrortStatus))
                     
                     return
                 }
             
-                let commentModel = CommentModel(cmid: 0, videoId: videoId, source_type: data["sourceType"] as? String, source_name: data["sourceName"] as? String, part_name: data["partName"] as? String, vid: data["vid"] as? Int, create_time: Date(), content: data["content"] as? String, uid: uid, video_name: data["videoName"] as? String, score: data["score"] as? Int)
+                let commentModel = CommentModel(cmid: 0, videoId: videoId, source_type: data["sourceType"] as? String, source_name: data["sourceName"] as? String, part_name: data["partName"] as? String, vid: data["vid"] as? Int, create_time: Date(), content: data["content"] as? String, uid: uid, video_name: data["videoName"] as? String, score: score)
                 
                 let status = try MySQLConnectionPool.execute{ connection in
                     
