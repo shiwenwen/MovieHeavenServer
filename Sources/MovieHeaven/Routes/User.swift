@@ -35,7 +35,7 @@ struct User {
                     return
                 }
                 let user = rows.first!
-                let info: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender,"uid": user.uid]
+                let info: [String: Any?] = user.toDictionary()
                 try response.setBody(json:RequestHandleUtil.responseJson(data: ["userInfo":info]))
                 
                 

@@ -45,7 +45,29 @@ struct VideoComment {
                 }
                 if status.affectedRows > 0 {
                     //评论成功
-                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "评论成功", status: .success))
+                    let counts:[CountModel] = try MySQLConnectionPool.execute{ connection in
+                        try connection.query("select count(1) as num from comment_tbl where videoId=? and uid=?",[videoId,uid])
+                    }
+                    let num = counts.first!.num
+                    LogFile.info("已经有\(num)条评论")
+                    var accumulated_points = 0
+                    //根据是否多次评论增加积分
+                    if num > 1 {
+                        let timeinterval = Int(Date().timeIntervalSince1970)
+                        //多次评论
+                         accumulated_points = timeinterval % 2 == 0 ? 1 : 0
+                        let _ = try MySQLConnectionPool.execute{ connection in
+                            try connection.query("update user_tbl set accumulated_points=accumulated_points+\(accumulated_points) where id=?", [uid])
+                        }
+                    } else {
+                        //第一次评论
+                        accumulated_points = 5
+                       let _ = try MySQLConnectionPool.execute{ connection in
+                            try connection.query("update user_tbl set accumulated_points=accumulated_points+\(accumulated_points) where id=?", [uid])
+                        }
+                    }
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: "评论成功,增加了\(accumulated_points)积分", status: .success))
+                    
                 } else {
                     try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: HandleFailedTxt, status: .defaulErrortStatus))
                 }

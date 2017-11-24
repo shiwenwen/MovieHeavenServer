@@ -45,7 +45,7 @@ struct Auth {
                 
                 guard rows.count > 0 else {
 //                   注册
-                    let user = UserModel(uid: 0, qq_unionid: qq_unionid, nickName: nickName, avatar: avatar, gender: gender, create_time: Date())
+                    let user = UserModel(uid: 0, qq_unionid: qq_unionid, nickName: nickName, avatar: avatar, gender: gender, create_time: Date(),accumulated_points:0)
                     let status = try MySQLConnectionPool.execute{ connection -> QueryStatus in
                         
                         return try connection.query("insert into user_tbl set ?", [user]) as QueryStatus
