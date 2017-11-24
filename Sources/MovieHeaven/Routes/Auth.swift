@@ -52,7 +52,7 @@ struct Auth {
                     }
                     let userId = status.insertedID
                     request.session?.userid = "\(userId)"
-                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
+                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender,"uid": userId]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":1], txt: "登录成功")
                     try response.setBody(json: body)
                     return
@@ -68,13 +68,13 @@ struct Auth {
                 if  status.affectedRows > 0{
 //                    更新成功返回新信息
                     request.session?.userid = "\(user.uid)"
-                    let userInfo: [String: Any?] = ["nickName":nickName,"avatar":avatar,"gender":gender]
+                    let userInfo: [String: Any?] = ["nickName":nickName,"avatar":avatar,"gender":gender,"uid": user.uid]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":0], txt: "登录成功")
                     try response.setBody(json: body)
                 } else {
 //                    更新失败返回旧信息
                     request.session?.userid = "\(user.uid)"
-                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender]
+                    let userInfo: [String: Any?] = ["nickName":user.nickName,"avatar":user.avatar,"gender":user.gender, "uid": user.uid]
                     let body = RequestHandleUtil.responseJson(data: ["userInfo":userInfo,"isRegister":0], txt: "登录成功")
                     try response.setBody(json: body)
                 }

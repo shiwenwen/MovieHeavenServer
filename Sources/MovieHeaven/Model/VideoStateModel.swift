@@ -61,7 +61,7 @@ struct VideoStateModel: QueryRowResultType, QueryParameterDictionaryType, ModelJ
     func toDictionary() -> [String : Any?] {
         let format = DateFormatter()
         format.dateFormat = "YYYY-MM-dd HH:mm";
-        
+        format.timeZone = TimeZone(abbreviation: "UTC") //实际时间应该CCT 这里是转换导致的 设置UTC是为了矫正
         return [
             "hid":hid,
             "videoId": videoId,
