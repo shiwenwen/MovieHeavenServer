@@ -36,7 +36,7 @@ struct AppUpdatePublish {
                 }
             }
             do {
-                var appName: String?, bundleId: String?, version: String?, build: Int?, force = 0, description: String?
+                var appName: String?, bundleId: String?, version: String?, build: Int?, force = 0, description: String?, userName: String?, password: String?
                 
                 if let uploads = request.postFileUploads, uploads.count > 0 {
                     
@@ -65,6 +65,10 @@ struct AppUpdatePublish {
                             force = Int(upload.fieldValue) ?? 0
                         case "description":
                             description = upload.fieldValue
+                        case "userName":
+                            userName = upload.fieldValue
+                        case "password":
+                            password = upload.fieldValue
                         default:
                             
                             break
@@ -72,13 +76,17 @@ struct AppUpdatePublish {
                         
                     }
                     
-                    guard let build = build, let bundle_id = bundleId, let version = version else {
+                    guard let build = build, let bundle_id = bundleId, let version = version, let password = password, let userName = userName else {
                         response.setBody(string: "params error");
                         return
                     }
                     if build < 1 || bundle_id.length < 1 || version.length < 1 {
                         response.setBody(string: "params error");
                         return
+                    }
+                    guard userName == "shiwenwen" && password == "Sww13156537832" else {
+                        response.setBody(string: "Incorrect user name password");
+                        return;
                     }
                     let update = AppUpdateModel(bundleId: bundle_id, build: build, version: version, appName: appName, update_time: Date(), forceUpdate: force, description: description)
                     let _ = try MySQLConnectionPool.execute{ connection -> QueryStatus in
