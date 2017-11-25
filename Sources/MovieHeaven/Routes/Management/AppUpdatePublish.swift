@@ -94,6 +94,9 @@ struct AppUpdatePublish {
                         return try connection.query("insert into app_update_tbl set ?", [update]) as QueryStatus
                     }
                     response.setBody(string: "success");
+                    pushNotification(description ?? "")
+                    
+                    
                 }else{
                     response.setBody(string: "no data");
                 }
@@ -106,4 +109,43 @@ struct AppUpdatePublish {
         }
         
     }
+    //MARK:
+    fileprivate static func pushNotification(_ content: String) {
+        let data: [String:Any] = [
+            "platform": "ios",
+            "audience": "all",
+            "notification": [
+                "ios": [
+                    "alert": "观影天堂发布更新啦\n" + content,
+                    "sound": "default",
+                    "badge": "+1",
+                    "extras": [
+                        "target":"check_update",
+                        "className":"Tools",
+                        "method":"checkAPPUpdate",
+                        "isClassMethod":"1"
+                    ]
+                ]
+                
+            ]
+        ]
+        JpushUtil.sendNotification(data) { (error, result) in
+            if let error = error {
+                LogFile.error("通知发送失败\(error)")
+                
+            } else{
+                if let result = result {
+                    if let resultError = result["error"] as? [String:Any] {
+                        LogFile.error("通知发送失败:\(resultError["message"] as? String ?? "")")
+                    }else {
+                        LogFile.info("通知发送成功\(result)")
+                    }
+                } else {
+                    
+                    LogFile.error("未知错误")
+                }
+            }
+        }
+    }
+    
 }
