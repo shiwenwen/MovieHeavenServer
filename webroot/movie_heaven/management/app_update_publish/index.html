@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <link href="index.css" rel="stylesheet" type="text/css">
+    <title>发布更新</title>
+</head>
+<body>
+    <div class="container">
+        <h1>观影天堂APP更新管理</h1>
+        <div class="form">
+            <form action="/movie_heaven/api/v1/management/app_update_publish/submit" enctype="multipart/form-data" method="post" >
+                <div class="tr">
+                    <span>选择软件包</span>
+                    <input type="file" name="package">
+                </div>
+                <div class="tr">
+                    <span>软件名称</span>
+                    <input type="text" name="appName" value="观影天堂">
+                </div>
+                <div class="tr">
+                    <span>包名</span>
+                    <input type="text" name="bundleId" value="com.sww.watchMovieHeaven">
+                </div>
+                <div class="tr">
+                    <span>软件版本号</span>
+                    <input type="text" name="version" >
+                </div>
+                <div class="tr">
+                    <span>构建版本号</span>
+                    <input type="text" name="build" >
+                </div>
+                <div class="tr">
+                    <span>更新描述</span>
+                    <textarea name="description"></textarea>
+                </div>
+                <div class="tr">
+                    <span>是否强制更新</span>
+                    <input type="radio" name="force" value="0" checked="true"}>否
+                    <input type="radio" name="force" value="1">是
+                </div>
+                <input type="submit">
+
+            </form>
+        </div>
+</div>
+</body>
+</html>

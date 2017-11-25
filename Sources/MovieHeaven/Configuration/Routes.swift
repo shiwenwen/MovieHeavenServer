@@ -75,5 +75,13 @@ func mainRoutes() -> [[String: Any]] {
     //评论列表
     routes.append(["method":"get", "uri":APIV1 + videoComment + "/comments", "handler":VideoComment.getComments])
     
+//    -------------- 管理后台相关-------------
+    
+    let management = "management"
+//发布APP更新
+    routes.append(["method":"post", "uri":APIV1 + management + "/app_update_publish/submit", "handler":AppUpdatePublish.submit])
+    
+    
+    
     return routes
 }

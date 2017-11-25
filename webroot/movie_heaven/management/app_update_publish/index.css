@@ -1,0 +1,54 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 1244px;
+    background-size:cover;
+    background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1511578079&di=128cf32cb5cc62c459b38d65eff75169&src=http://www.51pptmoban.com/d/file/2012/06/06/5a007e08fba8981ad186c5de87d78232.jpg);
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Microsoft Yahei",Arial,Verdana,sans-serif;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    color: white;
+
+
+}
+h1 {
+    text-align: center;
+}
+.form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.tr {
+    margin: 20px 30px;
+    width: calc(100% - 60px);
+    display: flex;
+    flex-direction: row;
+
+}
+.tr span {
+    width: 150px;
+
+}
+[type=text]{
+    width: 200px;
+}
+[type=submit] {
+    width: 50%;
+}
+textarea {
+    width: 200px;
+    height: 150px;
+    resize: none;
+}

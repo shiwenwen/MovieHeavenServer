@@ -34,7 +34,14 @@ struct AppUpdateModel: QueryRowResultType, QueryParameterDictionaryType, ModelJs
     // See inserting example
     
     func queryParameter() throws -> QueryDictionary {
-        return QueryDictionary([:])
+        return QueryDictionary([
+            "bundle_id":bundleId,
+            "build":build,
+            "version":version,
+            "app_name":appName,
+            "force_update":forceUpdate,
+            "description":description
+            ])
     }
     func toDictionary() -> [String : Any?] {
         let format = DateFormatter()
