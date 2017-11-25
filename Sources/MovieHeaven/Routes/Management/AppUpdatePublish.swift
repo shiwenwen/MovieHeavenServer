@@ -24,7 +24,7 @@ struct AppUpdatePublish {
             // 如果这个POST请求不是分段multi-part类型，则该数组内容为空
             // 创建路径用于存储已上传文件
             let webroot = Dir("./webroot")
-            let fileDir = Dir(webroot.path + "movie_heaven/apps")
+            let fileDir = Dir(webroot.path + "movie_heaven/apps/MovieHeaven")
             LogFile.info("path:\(fileDir.path)")
             if !fileDir.exists {
                 do {
