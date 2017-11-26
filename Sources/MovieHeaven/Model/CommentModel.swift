@@ -21,9 +21,10 @@ struct CommentModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
     let uid: Int //用户id
     let video_name: String? //视频名称
     let score: Int? //评分
+    let img: String? //视频图片
     // Decode query results (selecting rows) to a model
     static func decodeRow(r: QueryRowResult) throws -> CommentModel {
-        return try CommentModel(cmid: r <| 0, videoId: r <| 1, source_type: r <|? 2, source_name: r <|? 3, part_name: r <|? 4, vid: r <|? 5, create_time: r <| 6, content: r <|? 7, uid: r <| 8, video_name: r <|? 9, score: r <|? 10)
+        return try CommentModel(cmid: r <| 0, videoId: r <| 1, source_type: r <|? 2, source_name: r <|? 3, part_name: r <|? 4, vid: r <|? 5, create_time: r <| 6, content: r <|? 7, uid: r <| 8, video_name: r <|? 9, score: r <|? 10, img: r <|? 11)
         
     }
     
@@ -41,7 +42,8 @@ struct CommentModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             "content": content,
             "uid": uid,
             "video_name":video_name,
-            "score":score
+            "score":score,
+            "img":img
             ])
     }
     func toDictionary() -> [String : Any?] {
@@ -59,7 +61,8 @@ struct CommentModel: QueryRowResultType, QueryParameterDictionaryType, ModelJson
             "content": content,
             "uid": uid,
             "videoName":video_name,
-            "score":score
+            "score":score,
+            "img": img
         ]
         
     }

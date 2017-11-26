@@ -74,12 +74,20 @@ func mainRoutes() -> [[String: Any]] {
     routes.append(["method":"post", "uri":APIV1 + videoComment + "/add_comment", "handler":VideoComment.addComment])
     //评论列表
     routes.append(["method":"get", "uri":APIV1 + videoComment + "/comments", "handler":VideoComment.getComments])
+    //个人评论列表
+    routes.append(["method":"get", "uri":APIV1 + videoComment + "/comments_self", "handler":VideoComment.getSelfComments])
     
 //    -------------- 管理后台相关-------------
     
     let management = "management"
 //发布APP更新
     routes.append(["method":"post", "uri":APIV1 + management + "/app_update_publish/submit", "handler":AppUpdatePublish.submit])
+    
+    //    -------------- 发布推送相关-------------
+    
+    let push = "push"
+    //发布视频推送
+    routes.append(["method":"post", "uri":APIV1 + push + "/send_video_push", "handler":Push.sendVideoPush])
     
     
     

@@ -37,7 +37,7 @@ struct VideoComment {
                     return
                 }
             
-                let commentModel = CommentModel(cmid: 0, videoId: videoId, source_type: data["sourceType"] as? String, source_name: data["sourceName"] as? String, part_name: data["partName"] as? String, vid: data["vid"] as? Int, create_time: Date(), content: data["content"] as? String, uid: uid, video_name: data["videoName"] as? String, score: score)
+                let commentModel = CommentModel(cmid: 0, videoId: videoId, source_type: data["sourceType"] as? String, source_name: data["sourceName"] as? String, part_name: data["partName"] as? String, vid: data["vid"] as? Int, create_time: Date(), content: data["content"] as? String, uid: uid, video_name: data["videoName"] as? String, score: score,img:data["img"] as? String)
                 
                 let status = try MySQLConnectionPool.execute{ connection in
                     
@@ -111,6 +111,38 @@ struct VideoComment {
             }
         }
     }
-
+    /// 获取个人评论列表
+    ///
+    /// - Parameter data: <#data description#>
+    /// - Returns: <#return value description#>
+    static func getSelfComments(data: [String:Any]) -> RequestHandler {
+        return { request, response in
+            defer {
+                response.completed()
+            }
+            guard let uid = RequestHandleUtil.sessionAuth(request: request, response: response) else {
+                return
+            }
+            do {
+                guard let pageNum = Int(request.param(name: "pageNum", defaultValue: "0")!), let pageSize = Int(request.param(name: "pageSize", defaultValue: "10")!) else {
+                    try response.setBody(json: RequestHandleUtil.responseJson(data: [:], txt: HandleFailedTxt, status: .defaulErrortStatus))
+                    return
+                }
+                
+                let rows: [CommentModel] = try MySQLConnectionPool.execute{ connection in
+                    return try connection.query("SELECT * FROM comment_tbl WHERE uid=? ORDER BY create_time DESC LIMIT ?,?;", [uid,pageNum * pageSize, pageSize])
+                }
+                var comments = [[String:Any?]]()
+                for comment in rows {
+                    comments.append(comment.toDictionary())
+                }
+                try response.setBody(json: RequestHandleUtil.responseJson(data: ["comments":comments]))
+                
+            } catch  {
+                LogFile.error("\(error)")
+                let _ = try? response.setBody(json:RequestHandleUtil.responseJson(data: [:], txt: nil, status: nil, code: .defaultError, msg: RequestFailed))
+            }
+        }
+    }
 
 }
