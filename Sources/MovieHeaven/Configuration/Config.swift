@@ -135,7 +135,7 @@ fileprivate func configWebroot() -> String {
 fileprivate func configMySQL() {
 
     MySQLConnectionPool = ConnectionPool(options: MySQLOptions(database: SQL_DB, password: SQL_PASSWORD, user: SQL_USER, port: SQL_PORT, host: SQL_HOST))
-    MySQLConnectionPool.maxConnections = 5
+    MySQLConnectionPool.maxConnections = 10
     
 }
 fileprivate struct MySQLOptions:ConnectionOption {
