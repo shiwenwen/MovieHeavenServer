@@ -42,7 +42,7 @@ func startServer() {
                     "port":SERVER_PORT,
                     "filters":filters(),
                     "routes":mainRoutes(),
-                    "tlsConfig": ["certPath": "./cert/214238272250689.pem","keyPath":"./cert/214238272250689.key"]
+                    //"tlsConfig": ["certPath": "./cert/214238272250689.pem","keyPath":"./cert/214238272250689.key"]
                 ]
             ]
         ]

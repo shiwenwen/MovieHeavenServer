@@ -7,7 +7,7 @@
 #if os(Linux)
     //MARK:----------- Local MySql Release -----------------
     let LOCAL_HOST = "http://47.94.175.119"
-    let SERVER_PORT = 443
+    let SERVER_PORT = 8081
     let SQL_HOST = "127.0.0.1"
     let SQL_USER = "root"
     let SQL_PASSWORD = "sww"
